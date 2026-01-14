@@ -1,0 +1,383 @@
+\documentclass[12pt,a4paper]{report}
+
+% Pacotes essenciais
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[portuguese]{babel}
+\usepackage{geometry}
+\usepackage{setspace}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{listings}
+\usepackage{xcolor}
+\definecolor{uminhoBlue}{RGB}{90,120,140}
+
+\geometry{margin=2.5cm}
+\onehalfspacing
+
+% Configuração de código
+\lstset{
+    basicstyle=\ttfamily\small,
+    frame=single,
+    breaklines=true,
+    keywordstyle=\color{blue},
+    commentstyle=\color{gray},
+    stringstyle=\color{red}
+}
+
+\begin{document}
+
+% Capa
+\begin{titlepage}
+\pagestyle{empty}
+
+% Logo UMinho
+\begin{flushleft}
+    \includegraphics[height=3.3cm]{Logo.png}
+\end{flushleft}
+
+\vspace{4cm}
+
+% Título
+{\color{uminhoBlue}
+\Huge \textbf{Algoritmos e Técnicas de Programação}\\[0.3cm]
+\Huge \textbf{}}\\[0.3cm]
+
+{\color{uminhoBlue}
+\begin{center}
+{\Large \textbf{Sistema de Simulação de Clínica Médica}}
+
+\vspace{4cm}
+
+% Grupo
+\begin{center}
+{\color{black}
+\textbf{Grupo 19}\\[0.4cm]
+Carlos Araújo -- a107187\\
+Eva Mendes -- a111551\\
+Maria Luísa Pinto -- a112117
+\end{flushright}
+
+
+% Rodapé
+\begin{center}
+{\color{black}
+{\small
+\textbf{Docentes:}\\
+José Carlos Leite Ramalho\\
+Luís Filipe Costa Cunha\\[0.8cm]
+
+
+{\color{uminhoBlue}
+\begin{center}
+\\
+Ano Letivo 2025/2026\\
+}
+
+
+\end{titlepage}
+\tableofcontents
+\newpage
+\begin{flushleft}
+    
+
+\section{Introdução}
+{\color{black}
+No contexto da unidade curricular de Algoritmos e Técnicas de Programação, foi desenvolvido um projeto que consiste na criação de uma aplicação em Python destinada a simular o funcionamento de uma clínica médica. Este sistema modela a chegada aleatória de pacientes, o atendimento por parte dos médicos disponíveis e a duração das consultas, possibilitando a recolha de diversas estatísticas, tais como o tempo médio de espera, o estado de ocupação dos médicos e a evolução das filas de espera.
+
+O principal objetivo deste trabalho é estudar o comportamento do sistema, analisando a influência de diferentes parâmetros, nomeadamente a taxa de chegada dos pacientes, o número de médicos em serviço e a distribuição dos tempos de consulta.
+
+Neste relatório é apresentada a descrição da base de dados utilizada, a arquitetura do sistema implementado, os principais resultados obtidos através de representações gráficas e uma análise crítica do desempenho da simulação.
+\clearpage
+
+\newpage
+{\color{uminhoBlue}
+\section{Descrição Geral do Sistema}
+{\color{black}
+O sistema foi desenvolvido em Python para a gestão e análise de simulações clínicas, disponibilizando uma interface gráfica simples e intuitiva através da biblioteca \textit{FreeSimpleGUI}.
+
+\vspace{1cm}
+
+{\color{uminhoBlue}
+\section{Requisitos}
+{\color{black}
+\begin{itemize}
+    \item Python 3.7 ou superior
+\end{itemize}
+
+{\color{uminhoBlue}
+\section{Instalação}
+{\color{black}
+Para instalar os pacotes necessários, executar o seguinte comando:
+\begin{lstlisting}[language=bash]
+pip install numpy matplotlib FreeSimpleGUI
+\end{lstlisting}
+
+\vspace{1cm} 
+
+{\color{uminhoBlue}
+\section{Execução da Aplicação}
+{\color{black}
+Para iniciar o sistema clínico:
+\begin{lstlisting}[language=bash]
+python atpfinal.py
+\end{lstlisting}
+
+\newpage
+
+
+{\color{uminhoBlue}
+
+\section{Base de Dados}
+{\color{black}
+O sistema utiliza um repositório de dados em formato JSON, designado por \texttt{pessoas.json}, que contém informações relativas aos vários pacientes utilizados na simulação.
+
+\vspace{3cm}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.9\textwidth]{base de dados.png}
+    \caption{Parte do ficheiro JSON}
+    \label{fig:anexo_espera_prioridade}
+\end{figure}
+\clearpage
+
+\newpage
+
+{\color{uminhoBlue}
+\section{Parâmetros da Simulação}
+
+
+{\color{black}
+
+Os principais parâmetros configuráveis do sistema são apresentados de seguida:
+
+\vspace{1cm}
+
+\begin{lstlisting}[language=Python]
+NUM_MEDICOS = 3
+TAXA_CHEGADA = 10 / 60    # 10 doentes por hora
+TEMPO_MEDIO_CONSULTA = 15
+TEMPO_SIMULACAO = 8 * 60  # Aproximadamente 8 horas
+DISTRIBUICAO_TEMPO_CONSULTA = "exponencial" | "normal" | "uniforme"
+\end{lstlisting}
+
+\vspace{1cm}
+
+{\color{uminhoBlue}
+\section{Interface Gráfica}
+{\color{black}
+
+A interface gráfica oferece uma navegação intuitiva através de vários botões, permitindo configurar, executar e analisar a simulação de forma eficiente. São apresentados dados como a chegada de pacientes à clínica, a ocupação médica, os tempos médios de espera e de consulta, bem como o tempo total passado na clínica.
+
+\vspace{1cm}
+
+{\color{uminhoBlue}
+\section{Área de Apresentação de Resultados}
+{\color{black}
+A área principal de leitura consiste numa caixa de texto destinada à apresentação de mensagens, resultados da simulação e análises do sistema, exibidas de forma sequencial e clara.
+
+\vspace{1cm}
+
+{\color{uminhoBlue}
+\section{Organização da Janela Principal}
+{\color{black}
+A interface principal está dividida em duas colunas:
+\begin{itemize}
+    \item Lado esquerdo: botões e campos de entrada de parâmetros
+    \item Lado direito: área de visualização dos resultados e dados dos pacientes
+\end{itemize}
+
+
+
+\newpage
+{\color{uminhoBlue}
+\section{Ecrã de Login}
+{\color{black}
+O acesso ao sistema é protegido por palavra-passe, impedindo alterações ou simulações sem autorização.
+{\color{uminhoBlue}
+
+\vspace{1cm}
+
+\section{Configurar Simulação}
+{\color{black}
+Permite definir os parâmetros principais da simulação, como o número de médicos, tempo total, taxa de chegada e distribuição do tempo de consulta.
+
+\vspace{1cm}
+
+{\color{uminhoBlue}
+\section{Executar Simulação}
+{\color{black}
+Inicia o motor de simulação, registando eventos em tempo real e processando os atendimentos.
+
+\vspace{1cm}
+
+{\color{uminhoBlue}
+\section{Estatísticas}
+{\color{black}
+\begin{itemize}
+    \item Evolução da fila ao longo do tempo
+    \item Ocupação dos médicos
+    \item Taxa média da fila vs taxa de chegada
+    \item Tempo médio dos pacientes na clínica
+\end{itemize}
+
+\newpage
+
+{\color{uminhoBlue}
+\section{Explicação Gráfica}
+\vspace{1cm} 
+
+Evolucao do tamanho da fila ao longo do tempo:
+{\color{black}
+Este grafico evidencia um crescimento inicial do tamanho da fila, resultado da adaptacao do sistema a taxa de chegada de doentes. Apos esse periodo, observa-se uma estabilizacao da fila, indicando que a capacidade de atendimento da clinica e suficiente para absorver a procura na maioria do tempo. No entanto, pequenos picos revelam momentos pontuais de congestionamento;
+
+\vspace{1cm} 
+
+{\color{uminhoBlue}
+Ocupacao dos medicos:
+{\color{black}
+Apresenta a ocupacao de cada medico ao longo de toda a simulacao. Valores muito altos representam o limite dos consultorios a serem ocupados por consultas enquanto valores muito baixos, poderao mostrar excesso de medicos para determinada especialidade;
+
+\vspace{1cm}
+
+{\color{uminhoBlue}
+Tamanho Medio da Fila vs Taxa de Chegada de pacientes:
+{\color{black}
+O tamanho medio da fila foi calculado como uma media ponderada pelo tempo, refletindo o numero medio de doentes em espera ao longo da simulacao. A medida que a taxa de chegada aumenta o tamanho da fila aumenta de modo proporcional, devido a maior afluencia para um mesmo numero de medicos, levando ao congestionamento da fila.  
+
+\vspace{1cm}
+{\color{uminhoBlue}
+Tempo medio na clinica por paciente:
+{\color{black}
+Este grafico representa o tempo medio que cada paciente permanece na clinica, desde a sua chegada ate ao final da consulta. Este valor inclui tanto o tempo de espera na fila como o tempo efetivo de atendimento medico. Observa-se que, a medida que a taxa de chegada de doentes aumenta ou o numero de medicos se mantem limitado, o tempo medio na clinica tende a aumentar, refletindo o crescimento das filas e dos tempos de espera. Este comportamento evidencia o impacto direto da carga do sistema na experiencia do paciente e no desempenho global da clinica.
+
+\newpage
+
+
+{\color{uminhoBlue}
+\section{Análise de Resultados}
+{\color{black}
+Os gráficos obtidos permitem avaliar indicadores cruciais para a gestão hospitalar, tais como o comportamento da fila de espera, a ocupação dos médicos e o impacto da taxa de chegada no tempo médio de permanência dos pacientes.
+
+Observa-se que, à medida que a taxa de chegada aumenta ou o número de médicos se mantém limitado, ocorre um aumento do congestionamento, refletindo-se em tempos de espera mais elevados.
+
+
+\vspace{1cm}
+
+{\color{uminhoBlue}
+\section{Interface Gráfica} 
+{\color{black}
+De seguida, apresentam-se detalhadamente as imagens das interfaces do projeto em simulação:
+
+\vspace{2cm}
+
+\begin{figure}[htbp]  
+    \centering
+    \includegraphics[width=0.7\textwidth]{inicio.png}
+    \caption{Ecrã Login}
+    \label{fig:janela-principal}
+\end{figure}
+
+\vspace{2cm}
+
+\begin{figure}[htbp]  
+    \centering
+    \includegraphics[width=0.6\textwidth]{clinica123.png}
+    \caption{Introdução da Palavra Passe}
+    \label{fig:janela-configuracao}
+\end{figure}
+
+\vspace{2cm}
+
+\begin{figure}[htbp]  
+    \centering
+    \includegraphics[width=0.6\textwidth]{entramos.png}
+    \caption{Janela Principla da Clínica}
+    \label{fig:fig-execucao}
+\end{figure}
+
+\vspace{2cm}
+
+\begin{figure}[htbp]  
+    \centering
+    \includegraphics[width=0.6\textwidth]{json.png}
+    \caption{Carregamento dos Pacientes do Json}
+    \label{fig:relatório-global}
+\end{figure}
+
+\vspace{2cm}
+
+\begin{figure}[htbp]  
+    \centering
+    \includegraphics[width=0.6\textwidth]{2.png}
+    \caption{Relatório Global da Simulação}
+    \label{fig:relatório-global-simulacao}
+\end{figure}
+
+\clearpage
+
+
+{\color{uminhoBlue}
+\section{Gráficos Resultantes da Simulação} 
+\label{anexo:graficos}
+{\color{black}
+
+Neste anexo apresentam-se os gráficos detalhados obtidos durante a execução de uma simulação do nosso sistema de atendimento hospitalar.
+
+\vspace{2cm}
+
+\begin{figure}[htbp] 
+    \centering
+    \includegraphics[width=0.7\textwidth]{grafico1.png}
+    \caption{Evolução do tamanho da fila ao longo do tempo.}
+    \label{fig:anexo_evolucao_fila}
+\end{figure}
+
+\vspace{2cm}
+
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.7\textwidth]{grafico2.png}
+    \caption{Taxa de ocupação dos médicos durante a simulação}
+    \label{fig:anexo_ocupacao_medicos}
+\end{figure}
+
+\newpage
+
+\vspace{2cm}
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.7\textwidth]{grafico3.png}
+    \caption{Tamanho médio da fila vs Taxa de chegada de pacientes}
+    \label{fig:anexo_espera_prioridade}
+\end{figure}
+
+\vspace{3cm}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.7\textwidth]{grafico4.png}
+    \caption{Tempo médio na clinica por paciente}
+    \label{fig:anexo_desistencias_tempo}
+\end{figure}
+\newpage
+
+{\color{uminhoBlue}
+\section{Conclusão}
+{\color{black}
+O projeto permitiu implementar uma simulação eficaz do funcionamento de uma clínica médica, possibilitando a análise do impacto de diferentes parâmetros no desempenho do sistema. Verificou-se que a taxa de chegada dos doentes e o número de médicos influenciam diretamente o tamanho das filas e os tempos médios de atendimento.
+
+Este trabalho contribuiu para a aplicação prática de conceitos fundamentais da unidade curricular, como simulação de eventos discretos, filas de espera e organização modular do código. Apesar das simplificações adotadas, o modelo constitui uma base sólida para futuras extensões, como pausas dos médicos, horários diferenciados ou múltiplas simulações para análises estatísticas mais aprofundadas.
+
+
+\newpage
+{\color{uminhoBlue}
+\section{Bibliografia}
+{\color{black}
+https://epl.di.uminho.pt/ jcr/AULAS/ATP2025/
+https://www.tutorialspoint.com/pysimplegui/index.htm
+\newline
+Sebenta de Ajuda do Latex
+\end{document}
